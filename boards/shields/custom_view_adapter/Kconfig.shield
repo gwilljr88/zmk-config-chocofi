@@ -1,2 +1,0 @@
-config SHIELD_CUSTOM_VIEW_ADAPTER
-    def_bool $(shields_list_contains,custom_view_adapter)
