@@ -1,0 +1,31 @@
+/* 1. Disable the default I2C bus AND the default OLED display */
+&pro_micro_i2c {
+    status = "disabled";
+};
+
+&oled {
+    status = "disabled";
+};
+
+/* 2. Manually define the nice_view_spi bus directly on the pro_micro_spi pins */
+nice_view_spi: &pro_micro_spi {
+    compatible = "nordic,nrf-spim";
+    status = "okay";
+    pinctrl-0 = <&spi1_default>;
+    pinctrl-1 = <&spi1_sleep>;
+    pinctrl-names = "default", "sleep";
+    cs-gpios = <&pro_micro 4 GPIO_ACTIVE_HIGH>;
+};
+
+/* 3. Setup USB CDC ACM for ZMK Studio */
+&zephyr_udc0 {
+    cdc_acm_uart: cdc_acm_uart {
+        compatible = "zephyr,cdc-acm-uart";
+    };
+};
+
+/ {
+    chosen {
+        zmk,studio-rpc-endpoint = &cdc_acm_uart;
+    };
+};
